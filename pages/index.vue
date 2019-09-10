@@ -9,16 +9,16 @@
         タスクを追加してください
       </h2>
       <div>
-        <input type="text">
+        <input v-model="content" type="text">
         <button>
           追加
         </button>
       </div>
       <div class="todo-list" align="center">
         <div>
-          <input type="radio" value="allState">全て
-          <input type="radio" value="working">作業中
-          <input type="radio" value="complete">完了
+          <input v-model="radioBtnState" type="radio" value="allState">全て
+          <input v-model="radioBtnState" type="radio" value="working">作業中
+          <input v-model="radioBtnState" type="radio" value="complete">完了
         </div>
         <table>
           <thead>
@@ -29,14 +29,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td />
-              <td />
+            <tr v-for="todo in computedTodos" :key="todo.value">
+              <td>{{ computedTodos.indexOf(todo) + 1 }}</td>
+              <td>{{ todo.taskContent }}</td>
               <td>
-                <button />
+                <button>
+                  {{ todo.taskState }}
+                </button>
               </td>
               <td>
-                <button />
+                <button>
+                  {{ todo.delBtn }}
+                </button>
               </td>
             </tr>
           </tbody>
@@ -52,6 +56,25 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
+  },
+  computed: {
+    computedTodos () {
+      return this.todos
+    }
+  },
+  async asyncData ({ app }) {
+    const todos = await app.$axios.$get('/todo/json')
+    return {
+      todos,
+      content: '',
+      radioBtnState: 'allState'
+    }
+  },
+  created () {
+    this.todos.forEach((todo) => {
+      todo.delBtn = '削除'
+      console.log(todo)
+    })
   }
 }
 </script>
@@ -59,7 +82,7 @@ export default {
 <style>
 .container {
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   justify-content: center;
   align-items: center;
