@@ -63,7 +63,7 @@ export default {
     }
   },
   async asyncData ({ app }) {
-    const todos = await app.$axios.$get('/todo/json')
+    const todos = await app.$axios.$get('/todo')
       .catch((error) => {
         console.log(error)
       })
