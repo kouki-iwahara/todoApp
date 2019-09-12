@@ -8,7 +8,7 @@ const todoController = {
         console.log(`全てのタスク: ${todos}`)
         if (!todos) {
           console.log('タスクがありません')
-          res.sendStatus(404)
+          res.status(404).send({ error: 'タスクがありません' })
           return
         }
         res.status(200).send(todos)
