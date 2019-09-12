@@ -19,7 +19,12 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': [
+      'error',{
+        "singleQuote": true,
+        "semi": false,
+      }
+    ],
     'no-console': 'off',
     'nuxt/no-cjs-in-config': 'off',
     "vue/html-self-closing": [

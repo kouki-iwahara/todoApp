@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import Logo from "~/components/Logo.vue";
+import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
@@ -59,24 +59,24 @@ export default {
   },
   computed: {
     computedTodos() {
-      return this.todos;
+      return this.todos
     }
   },
   async asyncData({ app }) {
-    const todos = await app.$axios.$get("/todo").catch(error => {
-      console.log(error);
-    });
+    const todos = await app.$axios.$get('/todo').catch(error => {
+      console.log(error)
+    })
     return {
       todos
-    };
+    }
   },
   created() {
     this.todos.forEach(todo => {
-      todo.delBtn = "削除";
-      console.log(todo);
-    });
+      todo.delBtn = '削除'
+      console.log(todo)
+    })
   }
-};
+}
 </script>
 
 <style>
@@ -90,8 +90,8 @@ export default {
 }
 
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;
