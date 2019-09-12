@@ -9,11 +9,25 @@ module.exports = {
   },
   extends: [
     '@nuxtjs',
-    'plugin:nuxt/recommended'
+    'plugin:nuxt/recommended',
+    'plugin:vue/essential',
+    "prettier"
+  ],
+  plugins: [
+    'vue',
+    'prettier'
   ],
   // add your custom rules here
   rules: {
+    'prettier/prettier': 'error',
     'no-console': 'off',
-    'nuxt/no-cjs-in-config': 'off'
+    'nuxt/no-cjs-in-config': 'off',
+    "vue/html-self-closing": [
+      "error", {
+        "html": {
+          "void": "always"
+        }
+      }
+    ],
   }
 }

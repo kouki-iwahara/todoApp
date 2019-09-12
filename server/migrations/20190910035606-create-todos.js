@@ -1,7 +1,7 @@
-'use strict'
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('todos', {
+    return queryInterface.createTable("todos", {
       task_id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,7 +13,7 @@ module.exports = {
       },
       task_state: {
         type: Sequelize.STRING,
-        defaultValue: '作業中'
+        defaultValue: "作業中"
       },
       created_at: {
         allowNull: false,
@@ -23,9 +23,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    })
+    });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('todos')
+    return queryInterface.dropTable("todos");
   }
-}
+};

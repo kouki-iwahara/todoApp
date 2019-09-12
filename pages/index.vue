@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <logo />
+      <Logo />
       <h1 class="title">
         ToDo List
       </h1>
@@ -9,16 +9,16 @@
         タスクを追加してください
       </h2>
       <div>
-        <input type="text">
+        <input type="text" />
         <button>
           追加
         </button>
       </div>
       <div class="todo-list" align="center">
         <div>
-          <input type="radio" value="allState">全て
-          <input type="radio" value="working">作業中
-          <input type="radio" value="complete">完了
+          <input type="radio" value="allState" />全て
+          <input type="radio" value="working" />作業中
+          <input type="radio" value="complete" />完了
         </div>
         <table>
           <thead>
@@ -51,33 +51,32 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Logo from "~/components/Logo.vue";
 
 export default {
   components: {
     Logo
   },
   computed: {
-    computedTodos () {
-      return this.todos
+    computedTodos() {
+      return this.todos;
     }
   },
-  async asyncData ({ app }) {
-    const todos = await app.$axios.$get('/todo')
-      .catch((error) => {
-        console.log(error)
-      })
+  async asyncData({ app }) {
+    const todos = await app.$axios.$get("/todo").catch(error => {
+      console.log(error);
+    });
     return {
       todos
-    }
+    };
   },
-  created () {
-    this.todos.forEach((todo) => {
-      todo.delBtn = '削除'
-      console.log(todo)
-    })
+  created() {
+    this.todos.forEach(todo => {
+      todo.delBtn = "削除";
+      console.log(todo);
+    });
   }
-}
+};
 </script>
 
 <style>
@@ -91,8 +90,8 @@ export default {
 }
 
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;
