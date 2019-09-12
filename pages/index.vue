@@ -9,16 +9,16 @@
         タスクを追加してください
       </h2>
       <div>
-        <input v-model="content" type="text">
+        <input type="text">
         <button>
           追加
         </button>
       </div>
       <div class="todo-list" align="center">
         <div>
-          <input v-model="radioBtnState" type="radio" value="allState">全て
-          <input v-model="radioBtnState" type="radio" value="working">作業中
-          <input v-model="radioBtnState" type="radio" value="complete">完了
+          <input type="radio" value="allState">全て
+          <input type="radio" value="working">作業中
+          <input type="radio" value="complete">完了
         </div>
         <table>
           <thead>
@@ -68,9 +68,7 @@ export default {
         console.log(error)
       })
     return {
-      todos,
-      content: '',
-      radioBtnState: 'allState'
+      todos
     }
   },
   created () {
