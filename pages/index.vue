@@ -112,6 +112,7 @@ export default {
       )
       todo.delBtn = '削除'
       this.$store.dispatch('todo/addTodoAction', todo)
+      this.content = ''
       console.log('addTodo', this.$store.state.todo.todos)
     },
     // stateボタンの状態切り替え
