@@ -33,7 +33,9 @@
               <td>{{ $store.state.todo.todos.indexOf(todo) + 1 }}</td>
               <td>{{ todo.taskContent }}</td>
               <td>
-                <button @click="changeState(computedTodos.indexOf(todo))">
+                <button
+                  @click="changeState($store.state.todo.todos.indexOf(todo))"
+                >
                   {{ todo.taskState }}
                 </button>
               </td>
@@ -114,7 +116,7 @@ export default {
     },
     // stateボタンの状態切り替え
     async changeState(index) {
-      const todo = this.computedTodos[index]
+      const todo = this.$store.state.todo.todos[index]
       const taskData = {
         taskId: todo.taskId,
         taskState: todo.taskState
