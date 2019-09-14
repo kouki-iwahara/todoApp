@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     computedTodos() {
-      return this.todos
+      return this.$store.getters['todo/todos']
     }
   },
   async asyncData({ app }) {
@@ -75,6 +75,7 @@ export default {
       todo.delBtn = '削除'
       console.log(todo)
     })
+    this.$store.dispatch('todo/setTodoAction', this.todos)
   }
 }
 </script>
