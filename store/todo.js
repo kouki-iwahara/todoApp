@@ -8,6 +8,9 @@ export const mutations = {
   },
   addTodo(state, todo) {
     state.todos.push(todo)
+  },
+  changeState(state, { index, taskState }) {
+    state.todos[index].taskState = taskState
   }
 }
 
@@ -23,5 +26,8 @@ export const actions = {
   },
   addTodoAction({ commit }, todo) {
     commit('addTodo', todo)
+  },
+  changeStateAction({ commit }, { index, taskState }) {
+    commit('changeState', { index, taskState })
   }
 }

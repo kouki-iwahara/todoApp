@@ -6,5 +6,7 @@ const todoController = require('../controllers/todoController')
 router.get('/', todoController.getAllTodos)
 // タスクの追加
 router.post('/', todoController.addTodo)
+// stateの切り替え
+router.get('/update', todoController.updateState)
 
 module.exports = router

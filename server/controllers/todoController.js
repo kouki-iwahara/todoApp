@@ -31,6 +31,41 @@ const todoController = {
         console.log(error)
         res.status(404).send({ error: error.message })
       })
+  },
+  // taskStateの切り替え path: todo/update mothod: get
+  updateState(req, res) {
+    const todoData = req.query
+    // taskStateが作業中なら完了にupdate
+    if (todoData.taskState === '作業中') {
+      models.todos
+        .update({ taskState: '完了' }, { where: { taskId: todoData.taskId } })
+        .then(() => {
+          return models.todos.findOne({ where: { taskId: todoData.taskId } })
+        })
+        .then(todo => {
+          res.status(200).send(todo.taskState)
+        })
+        .catch(error => {
+          console.log(error)
+          res.status(404).send({ error: error.message })
+        })
+      return
+    }
+    // taskStateが完了なら作業中にupdate
+    if (todoData.taskState === '完了') {
+      models.todos
+        .update({ taskState: '作業中' }, { where: { taskId: todoData.taskId } })
+        .then(() => {
+          return models.todos.findOne({ where: { taskId: todoData.taskId } })
+        })
+        .then(todo => {
+          res.status(200).send(todo.taskState)
+        })
+        .catch(error => {
+          console.log(error)
+          res.status(404).send({ error: error.message })
+        })
+    }
   }
 }
 
