@@ -11,6 +11,9 @@ export const mutations = {
   },
   changeState(state, { index, taskState }) {
     state.todos[index].taskState = taskState
+  },
+  delTodo(state, index) {
+    state.todos.splice(index, 1)
   }
 }
 
@@ -29,5 +32,8 @@ export const actions = {
   },
   changeStateAction({ commit }, { index, taskState }) {
     commit('changeState', { index, taskState })
+  },
+  delTodoAction({ commit }, index) {
+    commit('delTodo', index)
   }
 }

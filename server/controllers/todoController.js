@@ -66,6 +66,18 @@ const todoController = {
           res.status(404).send({ error: error.message })
         })
     }
+  },
+  // タスクの消去 path: todo/del mothod: get
+  delTodo(req, res) {
+    models.todos
+      .destroy({ where: { taskId: req.query.taskId } }, { force: true })
+      .then(() => {
+        res.status(200).send(`DBのtaskId:${req.query.taskId}を消去`)
+      })
+      .catch(error => {
+        console.log(error)
+        res.status(404).send({ error: error.message })
+      })
   }
 }
 

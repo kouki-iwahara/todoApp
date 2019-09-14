@@ -40,7 +40,7 @@
                 </button>
               </td>
               <td>
-                <button>
+                <button @click="delTodo($store.state.todo.todos.indexOf(todo))">
                   {{ todo.delBtn }}
                 </button>
               </td>
@@ -112,7 +112,7 @@ export default {
       )
       todo.delBtn = '削除'
       this.$store.dispatch('todo/addTodoAction', todo)
-      console.log(this.$store.state.todo.todos)
+      console.log('addTodo', this.$store.state.todo.todos)
     },
     // stateボタンの状態切り替え
     async changeState(index) {
@@ -128,6 +128,17 @@ export default {
         index,
         taskState
       })
+    },
+    // タスクの消去
+    async delTodo(index) {
+      const taskId = {
+        taskId: this.$store.state.todo.todos[index].taskId
+      }
+      await this.$axios
+        .$get('/todo/del', { params: taskId })
+        .then(res => alert(res))
+      this.$store.dispatch('todo/delTodoAction', index)
+      console.log('delTodo', this.$store.state.todo.todos)
     }
   }
 }
