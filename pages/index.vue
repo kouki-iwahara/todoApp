@@ -16,9 +16,9 @@
       </div>
       <div class="todo-list" align="center">
         <div>
-          <input type="radio" value="allState" />全て
-          <input type="radio" value="working" />作業中
-          <input type="radio" value="complete" />完了
+          <input v-model="taskState" type="radio" value="allState" />全て
+          <input v-model="taskState" type="radio" value="working" />作業中
+          <input v-model="taskState" type="radio" value="complete" />完了
         </div>
         <table>
           <thead>
@@ -30,7 +30,7 @@
           </thead>
           <tbody>
             <tr v-for="todo in computedTodos" :key="todo.value">
-              <td>{{ computedTodos.indexOf(todo) + 1 }}</td>
+              <td>{{ $store.state.todo.todos.indexOf(todo) + 1 }}</td>
               <td>{{ todo.taskContent }}</td>
               <td>
                 <button @click="changeState(computedTodos.indexOf(todo))">
@@ -60,11 +60,25 @@ export default {
   },
   data() {
     return {
-      content: ''
+      content: '',
+      taskState: 'allState'
     }
   },
   computed: {
     computedTodos() {
+      // ラジオボタンが'作業中'の時、作業中のタスクだけを残し表示
+      if (this.taskState === 'working') {
+        return this.$store.getters['todo/todos'].filter(function(todo) {
+          return todo.taskState === '作業中'
+        })
+      }
+      // ラジオボタンが'完了'の時、完了のタスクだけを残し表示
+      if (this.taskState === 'complete') {
+        return this.$store.getters['todo/todos'].filter(function(todo) {
+          return todo.taskState === '完了'
+        })
+      }
+      // ラジオボタンが'全て'の時、全てのタスクを表示
       return this.$store.getters['todo/todos']
     }
   },
@@ -98,7 +112,7 @@ export default {
       this.$store.dispatch('todo/addTodoAction', todo)
       console.log(this.$store.state.todo.todos)
     },
-    // タスクの状態切り替え
+    // stateボタンの状態切り替え
     async changeState(index) {
       const todo = this.computedTodos[index]
       const taskData = {
