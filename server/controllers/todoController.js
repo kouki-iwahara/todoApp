@@ -12,6 +12,25 @@ const todoController = {
       }
       res.status(200).send(todos)
     })
+  },
+  //  タスクの追加 path: /todo method: post
+  addTodo(req, res) {
+    models.todos
+      .create({ taskContent: req.body.taskContent })
+      .then(todo => {
+        // この時点ではtaskStateが格納されていない
+        console.log(todo)
+        // 登録されたtodoを習得
+        return models.todos.findOne({ where: { taskId: todo.taskId } })
+      })
+      .then(todo => {
+        console.log(todo)
+        res.status(200).send(todo)
+      })
+      .catch(error => {
+        console.log(error)
+        res.status(404).send({ error: error.message })
+      })
   }
 }
 

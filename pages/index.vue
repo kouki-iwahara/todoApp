@@ -9,8 +9,8 @@
         タスクを追加してください
       </h2>
       <div>
-        <input type="text" />
-        <button>
+        <input v-model="content" type="text" />
+        <button @click="addTodo">
           追加
         </button>
       </div>
@@ -51,11 +51,17 @@
 </template>
 
 <script>
+import querystring from 'querystring'
 import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
     Logo
+  },
+  data() {
+    return {
+      content: ''
+    }
   },
   computed: {
     computedTodos() {
@@ -76,6 +82,22 @@ export default {
       console.log(todo)
     })
     this.$store.dispatch('todo/setTodoAction', this.todos)
+  },
+  methods: {
+    // タスクの追加
+    async addTodo() {
+      const taskContent = {
+        taskContent: this.content
+      }
+      // 入力された値をrequestしresponseを表示する
+      const todo = await this.$axios.$post(
+        '/todo',
+        querystring.stringify(taskContent)
+      )
+      todo.delBtn = '削除'
+      this.$store.dispatch('todo/addTodoAction', todo)
+      console.log(this.$store.state.todo.todos)
+    }
   }
 }
 </script>
