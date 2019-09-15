@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import querystring from 'querystring'
+// import querystring from 'querystring'
 import Logo from '~/components/Logo.vue'
 
 export default {
@@ -102,16 +102,7 @@ export default {
   methods: {
     // タスクの追加
     async addTodo() {
-      const taskContent = {
-        taskContent: this.content
-      }
-      // 入力された値をrequestしresponseを表示する
-      const todo = await this.$axios.$post(
-        '/todo',
-        querystring.stringify(taskContent)
-      )
-      todo.delBtn = '削除'
-      this.$store.dispatch('todo/addTodoAction', todo)
+      await this.$store.dispatch('todo/addTodoAction', this.content)
       this.content = ''
       console.log('addTodo', this.$store.state.todo.todos)
     },

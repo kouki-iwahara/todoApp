@@ -1,3 +1,5 @@
+import querystring from 'querystring'
+
 export const state = () => ({
   todos: []
 })
@@ -27,7 +29,13 @@ export const actions = {
   setTodoAction({ commit }, todos) {
     commit('setTodos', todos)
   },
-  addTodoAction({ commit }, todo) {
+  async addTodoAction({ commit }, taskContent) {
+    const req = {
+      taskContent
+    }
+    // 入力された値をrequestし、stateに値を追加
+    const todo = await this.$axios.$post('/todo', querystring.stringify(req))
+    todo.delBtn = '削除'
     commit('addTodo', todo)
   },
   changeStateAction({ commit }, { index, taskState }) {
