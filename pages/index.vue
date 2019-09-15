@@ -112,13 +112,7 @@ export default {
     },
     // タスクの消去
     async delTodo(index) {
-      const taskId = {
-        taskId: this.$store.state.todo.todos[index].taskId
-      }
-      await this.$axios
-        .$get('/todo/del', { params: taskId })
-        .then(res => alert(res))
-      this.$store.dispatch('todo/delTodoAction', index)
+      await this.$store.dispatch('todo/fetchDelTodo', index)
       console.log('delTodo', this.$store.state.todo.todos)
     }
   }

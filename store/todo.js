@@ -52,7 +52,16 @@ export const actions = {
     })
     commit('updateState', { index, taskState })
   },
-  delTodoAction({ commit }, index) {
-    commit('delTodo', index)
+  // タスクデータをDBと画面から削除する
+  fetchDelTodo({ commit, state }, index) {
+    // クリックされたタスクのtaskIdからparams生成
+    const taskId = {
+      taskId: state.todos[index].taskId
+    }
+    // DBのタスクデータ削除が成功したら表示から消す
+    this.$axios.$get('/todo/del', { params: taskId }).then(res => {
+      commit('delTodo', index)
+      alert(res)
+    })
   }
 }
