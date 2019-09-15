@@ -11,7 +11,7 @@ export const mutations = {
   addTodo(state, todo) {
     state.todos.push(todo)
   },
-  changeState(state, { index, taskState }) {
+  updateState(state, { index, taskState }) {
     state.todos[index].taskState = taskState
   },
   delTodo(state, index) {
@@ -38,8 +38,19 @@ export const actions = {
     todo.delBtn = '削除'
     commit('addTodo', todo)
   },
-  changeStateAction({ commit }, { index, taskState }) {
-    commit('changeState', { index, taskState })
+  // 状態ボタンの切り替え
+  async fetchState({ commit, state }, index) {
+    // クリックされたタスクのデータからrequestするparamsを生成
+    const todo = state.todos[index]
+    const taskData = {
+      taskId: todo.taskId,
+      taskState: todo.taskState
+    }
+    // 更新されたstateの値がレスポンスで返り格納される('作業中'or'完了')
+    const taskState = await this.$axios.$get('/todo/update', {
+      params: taskData
+    })
+    commit('updateState', { index, taskState })
   },
   delTodoAction({ commit }, index) {
     commit('delTodo', index)

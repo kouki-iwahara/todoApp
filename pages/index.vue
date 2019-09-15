@@ -107,19 +107,8 @@ export default {
       console.log('addTodo', this.$store.state.todo.todos)
     },
     // stateボタンの状態切り替え
-    async changeState(index) {
-      const todo = this.$store.state.todo.todos[index]
-      const taskData = {
-        taskId: todo.taskId,
-        taskState: todo.taskState
-      }
-      const taskState = await this.$axios.$get('/todo/update', {
-        params: taskData
-      })
-      this.$store.dispatch('todo/changeStateAction', {
-        index,
-        taskState
-      })
+    changeState(index) {
+      this.$store.dispatch('todo/fetchState', index)
     },
     // タスクの消去
     async delTodo(index) {
