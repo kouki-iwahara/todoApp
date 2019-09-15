@@ -84,20 +84,9 @@ export default {
       return this.$store.getters['todo/todos']
     }
   },
-  async asyncData({ app }) {
-    const todos = await app.$axios.$get('/todo').catch(error => {
-      console.log(error)
-    })
-    return {
-      todos
-    }
-  },
-  created() {
-    this.todos.forEach(todo => {
-      todo.delBtn = '削除'
-      console.log(todo)
-    })
-    this.$store.dispatch('todo/setTodoAction', this.todos)
+  async asyncData({ store }) {
+    // 全てのtodoを読み込んで表示する
+    await store.dispatch('todo/fetchTodos')
   },
   methods: {
     // タスクの追加

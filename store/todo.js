@@ -26,7 +26,22 @@ export const getters = {
 }
 
 export const actions = {
-  setTodoAction({ commit }, todos) {
+  // 全てのtodoを読み込んで表示する
+  async fetchTodos({ commit }) {
+    let todos = []
+    // todoの読み込み
+    const fetchedTodos = await this.$axios.$get('/todo').catch(error => {
+      console.log(error)
+    })
+    // 読み込んだ値があれば削除ボタンを作りtodosに格納。
+    if (fetchedTodos) {
+      fetchedTodos.forEach(todo => {
+        todo.delBtn = '削除'
+      })
+      console.log(fetchedTodos)
+      todos = fetchedTodos
+    }
+    // 読み込んだtodos、もしくは空の値がstateにセットされる
     commit('setTodos', todos)
   },
   async addTodoAction({ commit }, taskContent) {
