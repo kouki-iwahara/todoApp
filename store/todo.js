@@ -6,7 +6,7 @@ export const state = () => ({
 
 export const mutations = {
   setTodos(state, todos) {
-    state.todos = todos
+    state.todos = todos.slice()
   },
   addTodo(state, todo) {
     state.todos.push(todo)
@@ -39,7 +39,7 @@ export const actions = {
         todo.delBtn = '削除'
       })
       console.log(fetchedTodos)
-      todos = fetchedTodos
+      todos = fetchedTodos.slice()
     }
     // 読み込んだtodos、もしくは空の値がstateにセットされる
     commit('setTodos', todos)
