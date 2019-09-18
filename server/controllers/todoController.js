@@ -33,38 +33,34 @@ const todoController = {
       })
   },
   // taskStateの切り替え path: todo/update mothod: get
-  updateState(req, res) {
-    const todoData = req.query
+  async updateState(req, res) {
+    // 渡されたidのタスクを取得
+    const todoData = await models.todos
+      .findOne({
+        where: { taskId: req.params.id }
+      })
+      .catch(error => {
+        console.log(error)
+      })
     // taskStateが作業中なら完了にupdate
     if (todoData.taskState === '作業中') {
-      models.todos
-        .update({ taskState: '完了' }, { where: { taskId: todoData.taskId } })
-        .then(() => {
-          return models.todos.findOne({ where: { taskId: todoData.taskId } })
-        })
-        .then(todo => {
-          res.status(200).send(todo.taskState)
-        })
+      const updateTodo = await todoData
+        .update({ taskState: '完了' })
         .catch(error => {
           console.log(error)
           res.status(404).send({ error: error.message })
         })
-      return
+      return res.status(200).send(updateTodo.taskState)
     }
     // taskStateが完了なら作業中にupdate
     if (todoData.taskState === '完了') {
-      models.todos
-        .update({ taskState: '作業中' }, { where: { taskId: todoData.taskId } })
-        .then(() => {
-          return models.todos.findOne({ where: { taskId: todoData.taskId } })
-        })
-        .then(todo => {
-          res.status(200).send(todo.taskState)
-        })
+      const updateTodo = await todoData
+        .update({ taskState: '作業中' })
         .catch(error => {
           console.log(error)
           res.status(404).send({ error: error.message })
         })
+      return res.status(200).send(updateTodo.taskState)
     }
   },
   // タスクの消去 path: todo/del mothod: get

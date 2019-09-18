@@ -7,7 +7,7 @@ router.get('/', todoController.getAllTodos)
 // タスクの追加
 router.post('/', todoController.addTodo)
 // stateの切り替え
-router.get('/update', todoController.updateState)
+router.put('/update/:id', todoController.updateState)
 // タスクの削除
 router.get('/del', todoController.delTodo)
 

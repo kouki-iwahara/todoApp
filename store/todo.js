@@ -54,17 +54,11 @@ export const actions = {
     commit('addTodo', todo)
   },
   // 状態ボタンの切り替え
-  async fetchState({ commit, state }, index) {
-    // クリックされたタスクのデータからrequestするparamsを生成
-    const todo = state.todos[index]
-    const taskData = {
-      taskId: todo.taskId,
-      taskState: todo.taskState
-    }
-    // 更新されたstateの値がレスポンスで返り格納される('作業中'or'完了')
-    const taskState = await this.$axios.$get('/todo/update', {
-      params: taskData
-    })
+  async updateState({ commit, state }, index) {
+    // クリックされたtaskIdのstateの値が更新されレスポンスで返り格納される('作業中'or'完了')
+    const taskState = await this.$axios.$put(
+      `/todo/update/${state.todos[index].taskId}`
+    )
     commit('updateState', { index, taskState })
   },
   // タスクデータをDBと画面から削除する

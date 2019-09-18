@@ -34,7 +34,7 @@
               <td>{{ todo.taskContent }}</td>
               <td>
                 <button
-                  @click="changeState($store.state.todo.todos.indexOf(todo))"
+                  @click="updateState($store.state.todo.todos.indexOf(todo))"
                 >
                   {{ todo.taskState }}
                 </button>
@@ -53,7 +53,6 @@
 </template>
 
 <script>
-// import querystring from 'querystring'
 import Logo from '~/components/Logo.vue'
 
 export default {
@@ -96,8 +95,8 @@ export default {
       console.log('addTodo', this.$store.state.todo.todos)
     },
     // stateボタンの状態切り替え
-    changeState(index) {
-      this.$store.dispatch('todo/fetchState', index)
+    updateState(index) {
+      this.$store.dispatch('todo/updateState', index)
     },
     // タスクの消去
     async delTodo(index) {
