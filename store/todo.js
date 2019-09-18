@@ -62,15 +62,10 @@ export const actions = {
     commit('updateState', { index, taskState })
   },
   // タスクデータをDBと画面から削除する
-  fetchDelTodo({ commit, state }, index) {
-    // クリックされたタスクのtaskIdからparams生成
-    const taskId = {
-      taskId: state.todos[index].taskId
-    }
-    // DBのタスクデータ削除が成功したら表示から消す
-    this.$axios.$get('/todo/del', { params: taskId }).then(res => {
+  delTodo({ commit, state }, index) {
+    this.$axios.$delete(`/todo/del/${state.todos[index].taskId}`).then(res => {
       commit('delTodo', index)
-      alert(res)
+      console.log('deleted', res)
     })
   }
 }

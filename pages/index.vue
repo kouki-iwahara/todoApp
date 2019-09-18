@@ -100,7 +100,7 @@ export default {
     },
     // タスクの消去
     async delTodo(index) {
-      await this.$store.dispatch('todo/fetchDelTodo', index)
+      await this.$store.dispatch('todo/delTodo', index)
       console.log('delTodo', this.$store.state.todo.todos)
     }
   }

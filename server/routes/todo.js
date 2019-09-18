@@ -9,6 +9,6 @@ router.post('/', todoController.addTodo)
 // stateの切り替え
 router.put('/update/:id', todoController.updateState)
 // タスクの削除
-router.get('/del', todoController.delTodo)
+router.delete('/del/:id', todoController.delTodo)
 
 module.exports = router

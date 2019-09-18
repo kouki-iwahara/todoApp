@@ -32,7 +32,7 @@ const todoController = {
         res.status(404).send({ error: error.message })
       })
   },
-  // taskStateの切り替え path: todo/update mothod: get
+  // taskStateの切り替え path: todo/update method: put
   async updateState(req, res) {
     // 渡されたidのタスクを取得
     const todoData = await models.todos
@@ -63,17 +63,18 @@ const todoController = {
       return res.status(200).send(updateTodo.taskState)
     }
   },
-  // タスクの消去 path: todo/del mothod: get
-  delTodo(req, res) {
-    models.todos
-      .destroy({ where: { taskId: req.query.taskId } }, { force: true })
-      .then(() => {
-        res.status(200).send(`DBのtaskId:${req.query.taskId}を消去`)
-      })
-      .catch(error => {
-        console.log(error)
-        res.status(404).send({ error: error.message })
-      })
+  // タスクの消去 path: todo/del method: delete
+  async delTodo(req, res) {
+    // 渡されたidのタスクを取得
+    const todoData = await models.todos.findOne({
+      where: { taskId: req.params.id }
+    })
+    // 取得したタスクを消去
+    const delTodo = await todoData.destroy({ force: true }).catch(error => {
+      console.log(error)
+      res.status(404).send({ error: error.message })
+    })
+    return res.status(200).send(delTodo)
   }
 }
 
