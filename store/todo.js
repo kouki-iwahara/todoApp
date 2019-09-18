@@ -44,28 +44,37 @@ export const actions = {
     // 読み込んだtodos、もしくは空の値がstateにセットされる
     commit('setTodos', todos)
   },
-  async addTodoAction({ commit }, taskContent) {
+  async addTodo({ commit }, taskContent) {
     const req = {
       taskContent
     }
     // 入力された値をrequestし、stateに値を追加
-    const todo = await this.$axios.$post('/todo', querystring.stringify(req))
-    todo.delBtn = '削除'
-    commit('addTodo', todo)
+    const addedTodo = await this.$axios
+      .$post('/todo', querystring.stringify(req))
+      .catch(error => {
+        console.log(error.message)
+      })
+    addedTodo.delBtn = '削除'
+    commit('addTodo', addedTodo)
   },
   // 状態ボタンの切り替え
   async updateState({ commit, state }, index) {
     // クリックされたtaskIdのstateの値が更新されレスポンスで返り格納される('作業中'or'完了')
-    const taskState = await this.$axios.$put(
-      `/todo/update/${state.todos[index].taskId}`
-    )
+    const taskState = await this.$axios
+      .$put(`/todo/update/${state.todos[index].taskId}`)
+      .catch(error => {
+        console.log(error.message)
+      })
     commit('updateState', { index, taskState })
   },
   // タスクデータをDBと画面から削除する
-  delTodo({ commit, state }, index) {
-    this.$axios.$delete(`/todo/del/${state.todos[index].taskId}`).then(res => {
-      commit('delTodo', index)
-      console.log('deleted', res)
-    })
+  async delTodo({ commit, state }, index) {
+    const deletedTodo = await this.$axios
+      .$delete(`/todo/del/${state.todos[index].taskId}`)
+      .catch(error => {
+        console.log(error.message)
+      })
+    console.log('deleted', deletedTodo)
+    commit('delTodo', index)
   }
 }

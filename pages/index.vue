@@ -90,7 +90,7 @@ export default {
   methods: {
     // タスクの追加
     async addTodo() {
-      await this.$store.dispatch('todo/addTodoAction', this.content)
+      await this.$store.dispatch('todo/addTodo', this.content)
       this.content = ''
       console.log('addTodo', this.$store.state.todo.todos)
     },
