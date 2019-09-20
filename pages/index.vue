@@ -9,16 +9,16 @@
         タスクを追加してください
       </h2>
       <div>
-        <input type="text" />
-        <button>
+        <input v-model="content" type="text" />
+        <button @click="addTodo">
           追加
         </button>
       </div>
       <div class="todo-list" align="center">
         <div>
-          <input type="radio" value="allState" />全て
-          <input type="radio" value="working" />作業中
-          <input type="radio" value="complete" />完了
+          <input v-model="taskState" type="radio" value="allState" />全て
+          <input v-model="taskState" type="radio" value="working" />作業中
+          <input v-model="taskState" type="radio" value="complete" />完了
         </div>
         <table>
           <thead>
@@ -30,15 +30,17 @@
           </thead>
           <tbody>
             <tr v-for="todo in computedTodos" :key="todo.value">
-              <td>{{ computedTodos.indexOf(todo) + 1 }}</td>
+              <td>{{ $store.state.todo.todos.indexOf(todo) + 1 }}</td>
               <td>{{ todo.taskContent }}</td>
               <td>
-                <button>
+                <button
+                  @click="updateState($store.state.todo.todos.indexOf(todo))"
+                >
                   {{ todo.taskState }}
                 </button>
               </td>
               <td>
-                <button>
+                <button @click="delTodo($store.state.todo.todos.indexOf(todo))">
                   {{ todo.delBtn }}
                 </button>
               </td>
@@ -51,32 +53,58 @@
 </template>
 
 <script>
-import Logo from "~/components/Logo.vue";
+import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
     Logo
   },
-  computed: {
-    computedTodos() {
-      return this.todos;
+  data() {
+    return {
+      content: '',
+      taskState: 'allState'
     }
   },
-  async asyncData({ app }) {
-    const todos = await app.$axios.$get("/todo").catch(error => {
-      console.log(error);
-    });
-    return {
-      todos
-    };
+  computed: {
+    computedTodos() {
+      // ラジオボタンが'作業中'の時、作業中のタスクだけを残し表示
+      if (this.taskState === 'working') {
+        return this.$store.getters['todo/todos'].filter(function(todo) {
+          return todo.taskState === '作業中'
+        })
+      }
+      // ラジオボタンが'完了'の時、完了のタスクだけを残し表示
+      if (this.taskState === 'complete') {
+        return this.$store.getters['todo/todos'].filter(function(todo) {
+          return todo.taskState === '完了'
+        })
+      }
+      // ラジオボタンが'全て'の時、全てのタスクを表示
+      return this.$store.getters['todo/todos']
+    }
   },
-  created() {
-    this.todos.forEach(todo => {
-      todo.delBtn = "削除";
-      console.log(todo);
-    });
+  async asyncData({ store }) {
+    // 全てのtodoを読み込んで表示する
+    await store.dispatch('todo/fetchTodos')
+  },
+  methods: {
+    // タスクの追加
+    async addTodo() {
+      await this.$store.dispatch('todo/addTodo', this.content)
+      this.content = ''
+      console.log('addTodo', this.$store.state.todo.todos)
+    },
+    // stateボタンの状態切り替え
+    updateState(index) {
+      this.$store.dispatch('todo/updateState', index)
+    },
+    // タスクの消去
+    async delTodo(index) {
+      await this.$store.dispatch('todo/delTodo', index)
+      console.log('delTodo', this.$store.state.todo.todos)
+    }
   }
-};
+}
 </script>
 
 <style>
@@ -90,8 +118,8 @@ export default {
 }
 
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;

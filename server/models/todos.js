@@ -1,7 +1,7 @@
-"use strict";
+'use strict'
 module.exports = (sequelize, DataTypes) => {
   const todos = sequelize.define(
-    "todos",
+    'todos',
     {
       taskId: {
         type: DataTypes.INTEGER,
@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       underscored: true
     }
-  );
+  )
   todos.associate = function(models) {
     // associations can be defined here
-  };
-  return todos;
-};
+  }
+  return todos
+}
